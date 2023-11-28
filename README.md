@@ -9,7 +9,7 @@ Para correrlos se requieren las siguientes librerías:
   
 Se pueden instalar con el siguiente comando:
 
-`pip install numpy pandas matplotlib solarpy`
+```pip install numpy pandas matplotlib solarpy```
 
 El archivo `draw_graph.py` contiene el cálculo de la ecuación del tiempo y su gráfico.
 
