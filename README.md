@@ -2,7 +2,7 @@
 Scripts utilizados para cálculos de geometría solar, generación de imágenes y dimensiones del reloj solar analemático emplazado en el predio del CCT CONICET MENDOZA.
 
 Para correrlos se requieren las siguientes librerías:
-> Pandas
-> Numpy
-> Matplotlib
-> Solarpy
+* Pandas
+* Numpy
+* Matplotlib
+* Solarpy
