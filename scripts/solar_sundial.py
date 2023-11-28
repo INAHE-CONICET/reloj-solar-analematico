@@ -4,6 +4,8 @@ import solarpy as sp
 import pandas as pd
 import numpy as np
 
+# Script utilizado para cálculo de geometría solar anual para la ubicación del Reloj Solar Analemático
+
 
 def lng_to360(lng_input):
     if lng_input < 0:
@@ -52,20 +54,28 @@ def time_height(min_height, latitude_input, declination):
     return height_output
 
 
+# Parámetros del sitio
 latitude = -32.883
 longitude = -68.833
 longitude_std = -45
 user_height = 1.4
 
+
 year_2023 = pd.date_range("2023-01-01 00:00", "2023-12-31 23:59", freq="min")
+# Declinación solar
 declination_list = [np.rad2deg(sp.declination(date)) for date in year_2023]
+# Día Juliano
 julian_day = [sp.day_of_the_year(date) for date in year_2023]
+# Hora solar
 solar_time = pd.Series([standard2solar_time_modified(date, longitude, longitude_std) for date in year_2023])
+# Ángulo horario
 hour_angle = pd.Series([np.rad2deg(sp.hour_angle(date)) for date in solar_time])
+# Altura de la sombra
 shadow_height = [time_height(user_height, np.deg2rad(latitude), decl) for decl in np.deg2rad(declination_list)]
+# Ángulo cenital
 theta_z = [sp.theta_z(date, latitude) for date in year_2023]
 
-# Calculando la elipse
+# Cálculos dimensiones de la elipse
 ellipse_max_radius = 2
 ellipse_min_radius = np.abs(ellipse_max_radius * np.sin(np.deg2rad(latitude)))
 ellipse_focus = np.sqrt(ellipse_max_radius**2 - ellipse_min_radius**2)
@@ -74,11 +84,13 @@ x = ellipse_max_radius * np.sin(np.deg2rad(t))
 y = ellipse_max_radius * np.sin(np.deg2rad(latitude)) * np.cos(np.deg2rad(t))
 x = x.tolist()
 y = y.tolist()
-
+# Marcas en regla central
 z = pd.Series(ellipse_max_radius * np.tan(np.deg2rad(declination_list)) * np.cos(np.deg2rad(latitude)))
 
+# Estructuración de datos en DataFrame (minuto a minuto)
 df = pd.DataFrame({"julian_day": julian_day, "datetime": year_2023, "declination": declination_list,
-                   "solar_time": solar_time.dt.time, "hour_angle": hour_angle, "shadow_height": shadow_height, "z":z})
+                   "solar_time": solar_time.dt.time, "hour_angle": hour_angle, "shadow_height": shadow_height, "z": z})
+# Simplificación de la estructura minutal a diaria
 df_diario = df[df["hour_angle"] == 0].reset_index(drop=True)
 z_diario = df_diario["z"]
 
