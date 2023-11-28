@@ -7,4 +7,4 @@ Para correrlos se requieren las siguientes librerías:
 * Matplotlib
 * Solarpy
 Se pueden instalar con el siguiente comando:
-´´´pip install numpy pandas matplotlib solarpy´´´
+`pip install numpy pandas matplotlib solarpy`
