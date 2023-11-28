@@ -6,3 +6,5 @@ Para correrlos se requieren las siguientes librerías:
 * Numpy
 * Matplotlib
 * Solarpy
+Se pueden instalar con el siguiente comando:
+´´´pip install numpy pandas matplotlib solarpy´´´
